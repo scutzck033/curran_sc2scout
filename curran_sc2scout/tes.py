@@ -1,0 +1,11 @@
+import tensorflow as tf
+x = tf.constant([1, 4])
+y = tf.constant([2, 5])
+z = tf.constant([3, 6])
+res1 = tf.stack([x,y,z])
+res2 = tf.stack([x,y,z])
+res3 = tf.stack([x,y,z])
+res = tf.stack([res1,res2,res3])
+print(res.shape)
+sess = tf.Session()
+print(sess.run(res))
