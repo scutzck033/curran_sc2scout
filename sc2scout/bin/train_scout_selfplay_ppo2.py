@@ -1,9 +1,9 @@
 from baselines import deepq
 from baselines import logger
-from baselines.ppo2 import ppo2_twoStreamModel,ppo2
+from baselines.ppo2 import ppo2_twoStreamModel,ppo2,ppo2_v1
 from baselines.ppo2.policies import CnnVecSplitPolicy,CnnPolicy, LstmPolicy, LnLstmPolicy, MlpPolicy,twoStreamCNNPolicy
 from baselines.common.vec_env.subproc_vec_env import SubprocVecEnv
-from baselines.common.vec_env.vec_frame_stack import VecFrameStack,VecFrameStack2
+from baselines.common.vec_env.vec_frame_stack import VecFrameStack
 
 import multiprocessing
 import tensorflow as tf
@@ -38,7 +38,7 @@ flags.DEFINE_string("agent_interface_format", "feature",
 
 flags.DEFINE_integer("max_agent_episodes", 1, "Total agent episodes.")
 flags.DEFINE_integer("max_step", 1000, "Game steps per episode.")
-flags.DEFINE_integer("step_mul", 24, "Game steps per agent step.")
+flags.DEFINE_integer("step_mul", 8, "Game steps per agent step.")
 flags.DEFINE_integer("random_seed", None, "Random_seed used in game_core.")
 
 flags.DEFINE_string("train_log_dir", './log/explore_evade_twostreamcnn_log', "train log directory")
@@ -61,7 +61,7 @@ flags.DEFINE_float('param_cr', 0.1, 'the parameter cliprange')
 flags.DEFINE_integer('param_tstep', 1000000, 'the parameter totoal step')
 
 flags.DEFINE_string("map", 'scout_evade', "Name of a map to use.")
-flags.DEFINE_string("policy", "LstmPolicy",
+flags.DEFINE_string("policy", "CnnVecSplitPolicy",
                     "policy Format: [CnnVecSplitPolicy|CnnPolicy|LnLstmPolicy|LstmPolicy|MlpPolicy|twoStreamCNNPolicy]")
 flags.mark_flag_as_required("map")
 flags.mark_flag_as_required("wrapper")
@@ -172,7 +172,7 @@ def main(unused_argv):
         'CnnVecSplitPolicy':CnnVecSplitPolicy
     }
 
-    obs_dict = {'img_obs_shape':(112,112,3),'vec_obs_shape':(2,),'num_frame_stack':4}
+    obs_dict = {'img_obs_shape':(32,32,3),'vec_obs_shape':(2,),'num_frame_stack':4}
 
     env = VecFrameStack(make_sc2_dis_env(num_env=FLAGS.param_concurrent, seed=rs, players=players,
                            agent_interface_format=agent_interface_format),obs_dict['num_frame_stack'])
@@ -187,8 +187,18 @@ def main(unused_argv):
                    save_interval=50,
                    load_path=None#FLAGS.model_dir
                     )
+    elif FLAGS.policy == 'CnnVecSplitPolicy':
+        ppo2_v1.learn(policy=policy_dict[FLAGS.policy], env=env, nsteps=64, nminibatches=1,obs_dict=obs_dict,
+                   lam=param_lam, gamma=param_gamma, noptepochs=4, log_interval=1,
+                   ent_coef=0.01,
+                   lr=lambda f: f * param_lr,
+                   cliprange=lambda f: f * param_cr,
+                   total_timesteps=param_tstep,
+                   save_interval=50,
+                   load_path=None#FLAGS.model_dir
+                    )
     else:
-        ppo2.learn(policy=policy_dict[FLAGS.policy], env=env, nsteps=128, nminibatches=1,obs_dict=obs_dict,
+        ppo2.learn(policy=policy_dict[FLAGS.policy], env=env, nsteps=128, nminibatches=1,
                                   lam=param_lam, gamma=param_gamma, noptepochs=4, log_interval=1,
                                   ent_coef=0.01,
                                   lr=lambda f: f * param_lr,

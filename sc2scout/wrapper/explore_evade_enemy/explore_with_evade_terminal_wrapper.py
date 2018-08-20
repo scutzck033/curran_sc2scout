@@ -2,9 +2,10 @@ import numpy as np
 from sc2scout.wrapper.util.dest_range import DestRange
 from sc2scout.wrapper.explore_enemy.auxiliary_wrapper import RoundTripTerminalWrapper
 
-JUDGE_WALKAROUND_DISTANCE = 10
+JUDGE_WALKAROUND_DISTANCE = 12
 ENEMY_BASE_RANGE = 12
 SCOUT_RANGE = 8
+EXPLORE_STEP = 250
 
 class ExploreWithEvadeTerminalWrapper(RoundTripTerminalWrapper):
     def __init__(self, env):
@@ -13,6 +14,7 @@ class ExploreWithEvadeTerminalWrapper(RoundTripTerminalWrapper):
         self._enemy_base_range_width = ENEMY_BASE_RANGE
         self._scout_range_width = SCOUT_RANGE
         self._map_size = self.env.unwrapped.map_size()
+        self._explore_step_required = EXPLORE_STEP
 
     def _reset(self):
         obs = self.env._reset()
@@ -21,6 +23,7 @@ class ExploreWithEvadeTerminalWrapper(RoundTripTerminalWrapper):
         self._judge_back = False
         self._enemy_base_range_map = self.createRangeMap(self.env.unwrapped.enemy_base(),self._enemy_base_range_width)
         self._home_base = DestRange(self.env.unwrapped.owner_base())
+        self._curr_explore_step = 0
 
         return obs
 
@@ -45,10 +48,11 @@ class ExploreWithEvadeTerminalWrapper(RoundTripTerminalWrapper):
             self._task_finished = True
             return True
 
-        if scout_health < float(max_health) / 5:
+        survive = self.env.unwrapped.scout_survive()
+        if survive:
+            return done
+        else:
             return True
-
-        return done
 
     def createRangeMap(self,pos,range_width):
 
@@ -83,10 +87,14 @@ class ExploreWithEvadeTerminalWrapper(RoundTripTerminalWrapper):
 
 
     def judge_back(self):
-        scout = self.env.unwrapped.scout()
-        curr_scout_map=self.createRangeMap([scout.float_attr.pos_x,scout.float_attr.pos_y],self._scout_range_width)
-        self.updateEnemyBaseMap(curr_scout_map)
-        if (1 in self._enemy_base_range_map):
-            pass
-        else:
-            self._judge_back = True
+        if self._judge_walkaround:
+            self._curr_explore_step += 1
+            if (not self._judge_back) and (self._curr_explore_step > self._explore_step_required):
+                self._judge_back = True
+#        scout = self.env.unwrapped.scout()
+#        curr_scout_map=self.createRangeMap([scout.float_attr.pos_x,scout.float_attr.pos_y],self._scout_range_width)
+#        self.updateEnemyBaseMap(curr_scout_map)
+#        if (1 in self._enemy_base_range_map):
+#            pass
+#        else:
+#            self._judge_back = True

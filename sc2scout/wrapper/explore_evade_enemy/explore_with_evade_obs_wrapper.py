@@ -7,7 +7,7 @@ from sc2scout.wrapper.feature.scout_vec_feature import ScoutStaticsticVec
 class ExploreWithEvadeObsWrapper(gym.ObservationWrapper):
     def __init__(self, env):
         super(ExploreWithEvadeObsWrapper, self).__init__(env)
-        self._obs = (ScoutlImgFeature(compress_width=64,scout_range=22,channel_num=3),ScoutStaticsticVec())
+        self._obs = (ScoutlImgFeature(compress_width=32,scout_range=22,channel_num=3),ScoutStaticsticVec())
         self._init_obs_space()
 
     def _reset(self):
@@ -17,7 +17,7 @@ class ExploreWithEvadeObsWrapper(gym.ObservationWrapper):
         self._walkaroundIndicator = False
         self._backIndicator = False
         obs = self.observation(obs,action=0)
-        print('statistic vec', obs[1])
+        # print('statistic vec', obs[1])
         return obs
 
     def _step(self, action):
@@ -27,7 +27,7 @@ class ExploreWithEvadeObsWrapper(gym.ObservationWrapper):
         obs = self.observation(obs,action)
         # print("current img_obs",(10*obs[0][:,:,0]).astype(np.int32))
         # print("current img_obs",np.shape(obs[0][:,:,1]))#.shape)
-        print('statistic vec', obs[1])
+        # print('statistic vec', obs[1])
         return obs, rwd, done, info
 
     def _init_obs_space(self):
