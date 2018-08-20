@@ -150,6 +150,7 @@ class ScoutVecFeature(FeatureExtractor):
 
         return (pos_x, pos_y)
 
+NUM_OF_ENEMIES = 3
 
 class ScoutStaticsticVec(FeatureExtractor):
     def __init__(self):
@@ -160,13 +161,15 @@ class ScoutStaticsticVec(FeatureExtractor):
         print("ScoutStaticsticVec obs reset")
 
     def obs_space(self):
-        low = np.zeros(2)
-        high = np.ones(2)
+        low = np.zeros(NUM_OF_ENEMIES)
+        high = np.ones(NUM_OF_ENEMIES)
         return Box(low, high)
 
     def extract(self, env, obs, action):
         scout = env.unwrapped.scout()
         features = []
+
+        curr_enemy_count = self._count_enemies(obs)
         # if scout.bool_attr.is_flying:
         #     features.append(1)  # flying
         # else:
@@ -175,8 +178,19 @@ class ScoutStaticsticVec(FeatureExtractor):
         # features.append(scout.float_attr.facing)
         # features.append(scout.float_attr.radius)
         features.append(scout.float_attr.health/scout.float_attr.health_max)# feature normilization
+        features.append(float(curr_enemy_count) / NUM_OF_ENEMIES)  # enemy_number feature after normilization
 
         return np.array(features)
+
+    def _count_enemies(self,obs):
+        enemy_count = 0
+        units = obs.observation['units']
+        for u in units:
+            if (u.int_attr.alliance == sm.AllianceType.ENEMY.value) and (
+                    u.unit_type in sm.COMBAT_UNITS or u.unit_type in sm.COMBAT_AIR_UNITS):
+                enemy_count += 1
+        return enemy_count
+
 
 
 
