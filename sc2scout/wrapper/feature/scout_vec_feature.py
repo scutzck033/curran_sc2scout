@@ -1,5 +1,5 @@
 from gym.spaces import Box
-
+from sc2scout.envs import scout_macro as sm
 import numpy as np
 
 from sc2scout.wrapper.feature.feature_extractor import FeatureExtractor
