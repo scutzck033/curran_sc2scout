@@ -46,14 +46,14 @@ class ZergBotAgent(AgentBase):
                                           enemy.float_attr.pos_y)
         if diff_dist < self._attack_range:
             #print('ZergBotAgent queen attack')
-            # return [self._attack_target(queen, [enemy.float_attr.pos_x,
-            #                             enemy.float_attr.pos_y])]
-            return [self._noop()]
+            return [self._attack_target(queen, [enemy.float_attr.pos_x,
+                                        enemy.float_attr.pos_y])]
+
 
         else:
             #print('ZergBotAgent queen catch-up')
-            return [self._move_to_target(queen, [enemy.float_attr.pos_x+8,
-                                        enemy.float_attr.pos_y+8])]
+            return [self._move_to_target(queen, [enemy.float_attr.pos_x,
+                                        enemy.float_attr.pos_y])]
 
     def reset(self, env):
         self._target = env.unwrapped.enemy_base()

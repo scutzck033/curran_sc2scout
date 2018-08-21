@@ -40,13 +40,16 @@ class ExploreWithEvadeTerminalWrapper(RoundTripTerminalWrapper):
             return done
 
         scout = self.env.unwrapped.scout()
-        scout_health = scout.float_attr.health
-        max_health = scout.float_attr.health_max
-        self._home_base.check_enter((scout.float_attr.pos_x, scout.float_attr.pos_y))
+        # scout_health = scout.float_attr.health
+        # max_health = scout.float_attr.health_max
 
-        if self._judge_back and self._home_base.enter:
-            self._task_finished = True
-            return True
+        # print("self._home_base.enter",self._home_base.enter)
+
+        if self._judge_back:
+            self._home_base.check_enter((scout.float_attr.pos_x, scout.float_attr.pos_y))
+            if self._home_base.enter:
+                self._task_finished = True
+                return True
 
         survive = self.env.unwrapped.scout_survive()
         if survive:
