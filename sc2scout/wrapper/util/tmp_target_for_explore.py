@@ -4,9 +4,9 @@ class TempTarget():
     def __init__(self,base_range,base_x,base_y):
         self._enemy_base_range = base_range
         self._tmp_target_list = [
-            (base_x - self._enemy_base_range, base_y),
-            (base_x, base_y - self._enemy_base_range),
-            (base_x + self._enemy_base_range, base_y),
+            (base_x - self._enemy_base_range, base_y - self._enemy_base_range),
+            (base_x - self._enemy_base_range, base_y + self._enemy_base_range),
+            (base_x + self._enemy_base_range, base_y - self._enemy_base_range),
             (base_x + self._enemy_base_range, base_y + self._enemy_base_range)
         ]
         self._curr_target_index = None
