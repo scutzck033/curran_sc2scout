@@ -42,7 +42,7 @@ class ScoutlImgFeature(ImgFeatExtractor):
             if not walkaround:  # forward phase
                 self.set_pos_global_channel1(env, image, 0, back)  # focus on the minimap for round trip
                 #self.set_pos_global_channel2(env, image, 1, enemys, back)
-                self.set_reverseIndicator_channel(env, image, 2, back)
+                self.set_reverseIndicator_channel(env, image, 1, back)
             else:  # walkaround phase
                 self.set_pos_local_channel1(env, image, 0,
                                             enemys)  # focus on the screen for evading enemy and viewing enemy resources
@@ -51,7 +51,7 @@ class ScoutlImgFeature(ImgFeatExtractor):
         else:  # backward phase
             self.set_pos_global_channel1(env, image, 0, back)  # focus on the minimap for round trip
             #self.set_pos_global_channel2(env, image, 1, enemys, back)
-            self.set_reverseIndicator_channel(env, image, 2, back)
+            self.set_reverseIndicator_channel(env, image, 1, back)
         # self.set_pos_channel2(env, image, 1, enemys, back)  # set channel two
         # self.set_reverseIndicator_channel(env,image,2,back) #set channel three
         return image
