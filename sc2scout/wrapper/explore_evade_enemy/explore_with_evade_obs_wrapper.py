@@ -7,7 +7,7 @@ from sc2scout.wrapper.feature.scout_vec_feature import ScoutStaticsticVec
 class ExploreWithEvadeObsWrapper(gym.ObservationWrapper):
     def __init__(self, env):
         super(ExploreWithEvadeObsWrapper, self).__init__(env)
-        self._obs = (ScoutlImgFeature(compress_width=32,scout_range=22,channel_num=2),ScoutStaticsticVec())
+        self._obs = (ScoutlImgFeature(compress_width=32,scout_range=22,channel_num=3),ScoutStaticsticVec())
         self._init_obs_space()
 
     def _reset(self):
