@@ -6,8 +6,8 @@ class TempTarget():
         self._tmp_target_list = [
             (base_x - self._enemy_base_range, base_y - self._enemy_base_range),
             (base_x - self._enemy_base_range, base_y + self._enemy_base_range),
-            (base_x + self._enemy_base_range, base_y - self._enemy_base_range),
-            (base_x + self._enemy_base_range, base_y + self._enemy_base_range)
+            (base_x + self._enemy_base_range, base_y + self._enemy_base_range),
+            (base_x + self._enemy_base_range, base_y - self._enemy_base_range)
         ]
         self._curr_target_index = None
         self._last_target_dist = None
