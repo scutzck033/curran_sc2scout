@@ -428,7 +428,7 @@ class ViewEnemyResourcesAndBase(Reward):
                     count += 1
                     self._unit_set.add(eu)
         if find_base:
-            count += 5
+            count += 2
 
         self.rwd = count * self.w
         print('view enemy resouces count=', count, ';reward=', self.rwd,';find base',self._enemy_base_once)
