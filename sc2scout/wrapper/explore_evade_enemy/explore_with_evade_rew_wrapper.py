@@ -26,7 +26,7 @@ class ExploreWithEvadeRwdWrapper(ScoutExploreEvadeRwd):
                                  er.EvadeUnderAttackRwd(weight=1),
                                  sr.ViewEnemyReward(weight=10),
                                  # er.EnemyInRangeRwd(weight=1),
-                                 sr.ExploreAcclerateRwd(weight=1)
+                                 #sr.ExploreAcclerateRwd(weight=1)
                                 ]
 
         self._backward_rewards = [sr.HomeReward(back=True, negative=False,weight=2),
