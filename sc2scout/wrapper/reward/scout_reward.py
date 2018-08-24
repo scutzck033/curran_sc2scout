@@ -203,8 +203,8 @@ class ViewEnemyReward(Reward):
 MIN_DIST_ERROR = 2.0
 
 class MinDistReward(Reward):
-    def __init__(self, negative=False):
-        super(MinDistReward, self).__init__(1)
+    def __init__(self, negative=False, weight):
+        super(MinDistReward, self).__init__(weight)
         self._min_dist = None
         self._negative = negative
 
