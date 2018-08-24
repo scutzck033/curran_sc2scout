@@ -7,8 +7,8 @@ class ExploreWithEvadeRwdWrapper(ScoutExploreEvadeRwd):
         super(ExploreWithEvadeRwdWrapper, self).__init__(env)
 
     def _assemble_reward(self):
-        self._forward_rewards = [sr.HomeReward(negative=True,weight=1),
-                                 sr.EnemyBaseReward(negative=False,weight=2),
+        self._forward_rewards = [sr.HomeReward(negative=False,weight=1),
+                                 sr.EnemyBaseReward(negative=False,weight=1),
                                  sr.ViewEnemyReward(weight=10),
                                  # sr.EnemyBaseArrivedReward(weight=50),
                                  sr.MinDistReward(negative=True),
@@ -29,10 +29,10 @@ class ExploreWithEvadeRwdWrapper(ScoutExploreEvadeRwd):
                                  sr.ExploreAcclerateRwd(weight=0.5)
                                 ]
 
-        self._backward_rewards = [sr.HomeReward(back=True, negative=False,weight=2),
-                                  sr.EnemyBaseReward(back=True, negative=True,weight=1),
+        self._backward_rewards = [sr.HomeReward(back=True, negative=False,weight=1),
+                                  #sr.EnemyBaseReward(back=True, negative=False,weight=1),
                                   sr.HomeArrivedReward(weight=50),
-                                  sr.MinDistReward(negative=True),
+                                  #sr.MinDistReward(negative=True),
                                   sr.BackwardStateRwd(weight=20),
                                   # er.EvadeDistanceReward(weight=1),
                                   er.EvadeUnderAttackRwd(weight=1),
