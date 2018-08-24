@@ -7,13 +7,13 @@ class ExploreWithEvadeRwdWrapper(ScoutExploreEvadeRwd):
         super(ExploreWithEvadeRwdWrapper, self).__init__(env)
 
     def _assemble_reward(self):
-        self._forward_rewards = [sr.HomeReward(negative=False,weight=1),
-                                 sr.EnemyBaseReward(negative=False,weight=1),
-                                 sr.ViewEnemyReward(weight=10),
+        self._forward_rewards = [sr.HomeReward(negative=False,weight=0.05),
+                                 sr.EnemyBaseReward(negative=False,weight=0.05),
+                                 sr.ViewEnemyReward(weight=0.5),
                                  # sr.EnemyBaseArrivedReward(weight=50),
-                                 sr.MinDistReward(negative=True),
+                                 sr.MinDistReward(negative=True,weight=0.05),
                                  # er.EvadeDistanceReward(weight=1),
-                                 er.EvadeUnderAttackRwd(weight=1),
+                                 er.EvadeUnderAttackRwd(weight=0.05),
                                  # er.EnemyInRangeRwd(weight=1),
                                  # sr.AreaOfOverlapReward(weight=2)
                                  ]
@@ -21,27 +21,27 @@ class ExploreWithEvadeRwdWrapper(ScoutExploreEvadeRwd):
         self._explore_rewards = [
                                  # sr.HomeReward(negative=True,weight=1),
                                  # sr.ViewEnemyResourcesAndBase(weight=10),
-                                 sr.ExploreStateRwd(weight=20),
+                                 sr.ExploreStateRwd(weight=1),
                                  # er.EvadeDistanceReward(weight=1),
-                                 er.EvadeUnderAttackRwd(weight=1),
-                                 sr.ViewEnemyResourcesAndBase(weight=5),
+                                 er.EvadeUnderAttackRwd(weight=0.05),
+                                 sr.ViewEnemyResourcesAndBase(weight=0.5),
                                  # er.EnemyInRangeRwd(weight=1),
-                                 sr.ExploreAcclerateRwd(weight=0.5)
+                                 sr.ExploreAcclerateRwd(weight=0.05)
                                 ]
 
-        self._backward_rewards = [sr.HomeReward(back=True, negative=False,weight=1),
+        self._backward_rewards = [sr.HomeReward(back=True, negative=False,weight=0.05),
                                   #sr.EnemyBaseReward(back=True, negative=False,weight=1),
-                                  sr.HomeArrivedReward(weight=50),
+                                  sr.HomeArrivedReward(weight=1),
                                   #sr.MinDistReward(negative=True),
-                                  sr.BackwardStateRwd(weight=20),
+                                  sr.BackwardStateRwd(weight=1),
                                   # er.EvadeDistanceReward(weight=1),
-                                  er.EvadeUnderAttackRwd(weight=1),
+                                  er.EvadeUnderAttackRwd(weight=0.05),
                                   # er.EnemyInRangeRwd(weight=1),
                                   # sr.AreaOfOverlapReward(weight=2),
                                   # sr.HitEnemyBaseReward(weight=50),
                                   ]
 
-        self._final_rewards = [sr.RoundTripFinalReward(weight=100),
+        self._final_rewards = [sr.RoundTripFinalReward(weight=1),
                                # er.EvadeFinalRwd(weight=50)
                                ]
 
