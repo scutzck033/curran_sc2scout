@@ -13,7 +13,7 @@ class ExploreWithEvadeRwdWrapper(ScoutExploreEvadeRwd):
                                  # sr.EnemyBaseArrivedReward(weight=50),
                                  sr.MinDistReward(negative=True,weight=0.05),
                                  # er.EvadeDistanceReward(weight=1),
-                                 er.EvadeUnderAttackRwd(weight=0.05),
+                                 
                                  # er.EnemyInRangeRwd(weight=1),
                                  # sr.AreaOfOverlapReward(weight=2)
                                  ]
@@ -23,7 +23,7 @@ class ExploreWithEvadeRwdWrapper(ScoutExploreEvadeRwd):
                                  # sr.ViewEnemyResourcesAndBase(weight=10),
                                  sr.ExploreStateRwd(weight=1),
                                  # er.EvadeDistanceReward(weight=1),
-                                 er.EvadeUnderAttackRwd(weight=0.05),
+                                 
                                  sr.ViewEnemyResourcesAndBase(weight=0.5),
                                  # er.EnemyInRangeRwd(weight=1),
                                  sr.ExploreAcclerateRwd(weight=0.05)
@@ -35,13 +35,14 @@ class ExploreWithEvadeRwdWrapper(ScoutExploreEvadeRwd):
                                   #sr.MinDistReward(negative=True),
                                   sr.BackwardStateRwd(weight=1),
                                   # er.EvadeDistanceReward(weight=1),
-                                  er.EvadeUnderAttackRwd(weight=0.05),
+                                  
                                   # er.EnemyInRangeRwd(weight=1),
                                   # sr.AreaOfOverlapReward(weight=2),
                                   # sr.HitEnemyBaseReward(weight=50),
                                   ]
 
-        self._final_rewards = [sr.RoundTripFinalReward(weight=1),
+        self._final_rewards = [sr.RoundTripFinalReward(weight=0.5),
+                               er.EvadeUnderAttackRwd(weight=0.05)
                                # er.EvadeFinalRwd(weight=50)
                                ]
 
