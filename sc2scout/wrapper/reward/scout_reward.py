@@ -470,11 +470,13 @@ class ExploreAcclerateRwd(Reward):
 
     def __init__(self, weight=1):
         super(ExploreAcclerateRwd, self).__init__(weight)
+        self._last_dist_to_Home = None
 
     def reset(self, obs, env):
         e_x, e_y = env.unwrapped.enemy_base()
         self.tmp_target = TempTarget(ENEMY_BASE_RANGE, e_x, e_y)
         self.target_count = 0
+        self._last_dist_to_Home = self._compute_dist(env)
 
     def compute_rwd(self, obs, reward, done, env):
         scout_x, scout_y = env.unwrapped.scout().float_attr.pos_x, env.unwrapped.scout().float_attr.pos_y
@@ -486,17 +488,31 @@ class ExploreAcclerateRwd(Reward):
         curr_dist = env.unwrapped._calculate_distances(scout_x, scout_y,
                                             curr_target_pos[0],
                                             curr_target_pos[1])
+        tmp_dist_to_home = self._compute_dist(env)
 
         if curr_dist < self.tmp_target.last_target_dist():
             self.rwd = 0
         else:
-            self.rwd = -1 * self.w
-
-        print("ExploreAcclerateRwd", self.rwd, "curr_dist", curr_dist, "last_dist", self.tmp_target.last_target_dist(),
-              "reached target",self.target_count)
+            if tmp_dist_to_home <= self._last_dist_to_Home:
+                self.rwd = -2 * self.w
+            else:
+                self.rwd = -1 * self.w
 
         self.tmp_target.set_last_target_dist(curr_dist)
 
         if curr_dist < 2:
             self.tmp_target.set_curr_target_index()
             self.target_count = self.target_count+1
+
+        self._last_dist_to_Home = tmp_dist_to_home
+
+        print("ExploreAcclerateRwd", self.rwd, "curr_dist", curr_dist, "last_dist", self.tmp_target.last_target_dist(),
+              "reached target", self.target_count)
+
+    def _compute_dist(self, env):
+        scout = env.scout()
+        home = env.owner_base()
+        dist = sm.calculate_distance(scout.float_attr.pos_x,
+                                     scout.float_attr.pos_y,
+                                     home[0], home[1])
+        return dist
