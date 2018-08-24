@@ -488,9 +488,9 @@ class ExploreAcclerateRwd(Reward):
                                             curr_target_pos[1])
 
         if curr_dist < self.tmp_target.last_target_dist():
-            self.rwd = self.w * 1
-        else:
             self.rwd = 0
+        else:
+            self.rwd = -1 * self.w
 
         print("ExploreAcclerateRwd", self.rwd, "curr_dist", curr_dist, "last_dist", self.tmp_target.last_target_dist(),
               "reached target",self.target_count)
