@@ -216,7 +216,7 @@ class ScoutlImgFeature(ImgFeatExtractor):
         curr_dist = env.unwrapped._calculate_distances(cx, cy,
                                                        curr_target_pos[0],
                                                        curr_target_pos[1])
-        if curr_dist < 0.5:
+        if curr_dist < 2:
             self.local_tmp_target.set_curr_target_index()
 
         # set owner pos
