@@ -124,8 +124,8 @@ class ScoutlImgFeature(ImgFeatExtractor):
         # image[scout_pos[0], scout_pos[1], channel_id] = 2
 
 
-        if back_indicator:
-            image[:, :, channel_id] = (-1) * image[:, :, channel_id]
+        #if back_indicator:
+         #   image[:, :, channel_id] = (-1) * image[:, :, channel_id]
 
     # to capture the relative location information between scout and enemies in a rough picture
     def set_pos_global_channel2(self, env, image, channel_id, enemys, back_indicator):
@@ -145,8 +145,8 @@ class ScoutlImgFeature(ImgFeatExtractor):
                 self.enhanceRange(image, channel_id, u_pos, self.global_scout_width,
                                   self.mat_element_value['enemy'] / len(self.mat_element_value))
 
-        if back_indicator:
-            image[:, :, channel_id] = (-1) * image[:, :, channel_id]
+        #if back_indicator:
+         #   image[:, :, channel_id] = (-1) * image[:, :, channel_id]
 
     # to capture the relative location information between scout and enemies in a precise picture
     def set_pos_local_channel1(self, env, image, channel_id, enemys):
@@ -231,7 +231,7 @@ class ScoutlImgFeature(ImgFeatExtractor):
             image[:, :, channel_id] = 0.1
         # if target is the home base
         else:
-            image[:, :, channel_id] = -0.1
+            image[:, :, channel_id] = -1
 
     def pos_2_2d_local(self, pos_x, pos_y, cx, cy):
         pos_x = (pos_x - cx) + self.local_radius
