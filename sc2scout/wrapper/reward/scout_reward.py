@@ -428,7 +428,7 @@ class ViewEnemyResourcesAndBase(Reward):
                     count += 1
                     self._unit_set.add(eu)
         if find_base:
-            count += 2
+            count += 0
 
         self.rwd = count * self.w
         print('view enemy resouces count=', count, ';reward=', self.rwd,';find base',self._enemy_base_once)
@@ -503,7 +503,7 @@ class ExploreAcclerateRwd(Reward):
 
         self.tmp_target.set_last_target_dist(curr_dist)
 
-        if curr_dist < 2:
+        if curr_dist < 4:
             self.tmp_target.set_curr_target_index()
             self.target_count = self.target_count+1
 
