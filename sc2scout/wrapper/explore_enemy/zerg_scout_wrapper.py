@@ -14,6 +14,7 @@ class ZergScoutWrapper(gym.Wrapper):
         return self.env._reset()
 
     def _step(self, action):
+        print("current step",self.env.unwrapped.curr_step())
         return self.env._step(action)
 
 class ZergScoutWrapper2(gym.Wrapper):
