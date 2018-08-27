@@ -86,6 +86,9 @@ class ScoutlImgFeature(ImgFeatExtractor):
         owner_base_pos = self.pos_2_2d(owner_base[0], owner_base[1])
         self.enhanceRange(image, channel_id, owner_base_pos, self.global_base_width,
                           self.mat_element_value['owner_base'] / len(self.mat_element_value))
+        if back_indicator:
+            self.enhanceRange(image, channel_id, owner_base_pos, self.global_base_width,
+                          self.mat_element_value['enemy_base'] / len(self.mat_element_value))
         # for u in owners:
         #     i, j = self.pos_2_2d(u.float_attr.pos_x, u.float_attr.pos_y)
         #     if u.unit_type in sm.BUILDING_UNITS:
@@ -102,6 +105,10 @@ class ScoutlImgFeature(ImgFeatExtractor):
         enemy_base_pos = self.pos_2_2d(enemy_base[0], enemy_base[1])
         self.enhanceRange(image, channel_id, enemy_base_pos, self.global_base_width,
                           self.mat_element_value['enemy_base'] / len(self.mat_element_value))
+        if back_indicator:
+            self.enhanceRange(image, channel_id, enemy_base_pos, self.global_base_width,
+                          self.mat_element_value['owner_base'] / len(self.mat_element_value))
+            
         # for u in enemys:
         #     i, j = self.pos_2_2d(u.float_attr.pos_x, u.float_attr.pos_y)
         #     if u.unit_type in sm.BUILDING_UNITS:
@@ -124,8 +131,8 @@ class ScoutlImgFeature(ImgFeatExtractor):
         # image[scout_pos[0], scout_pos[1], channel_id] = 2
 
 
-        #if back_indicator:
-         #   image[:, :, channel_id] = (-1) * image[:, :, channel_id]
+        if back_indicator:
+            image[:, :, channel_id] = (-1) * image[:, :, channel_id]
 
     # to capture the relative location information between scout and enemies in a rough picture
     def set_pos_global_channel2(self, env, image, channel_id, enemys, back_indicator):
@@ -216,7 +223,7 @@ class ScoutlImgFeature(ImgFeatExtractor):
         curr_dist = env.unwrapped._calculate_distances(cx, cy,
                                                        curr_target_pos[0],
                                                        curr_target_pos[1])
-        if curr_dist < 2:
+        if curr_dist < 4:
             self.local_tmp_target.set_curr_target_index()
 
         # set owner pos
@@ -231,7 +238,7 @@ class ScoutlImgFeature(ImgFeatExtractor):
             image[:, :, channel_id] = 0.1
         # if target is the home base
         else:
-            image[:, :, channel_id] = -1
+            image[:, :, channel_id] = -0.05
 
     def pos_2_2d_local(self, pos_x, pos_y, cx, cy):
         pos_x = (pos_x - cx) + self.local_radius
