@@ -90,6 +90,7 @@ class ExploreWithEvadeTerminalWrapper(RoundTripTerminalWrapper):
 
 
     def judge_back(self):
+        print("curr_explore_step:",self._curr_explore_step)
         if self._judge_walkaround:
             self._curr_explore_step += 1
             if (not self._judge_back) and (self._curr_explore_step > self._explore_step_required):
