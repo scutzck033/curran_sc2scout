@@ -30,6 +30,8 @@ class EvadeUnderAttackRwd(Reward):
     def _compute_rwd(self, curr_health):
         left_rwd = math.floor(int((curr_health / self._max_health) * self._max_rwd_sum))
         rwd = left_rwd - self._last_left_rwd
+        if rwd > 0:
+            rwd = 0
         self._last_left_rwd = left_rwd
         self._rwd_sum += rwd
         return rwd 
