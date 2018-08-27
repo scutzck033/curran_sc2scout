@@ -497,6 +497,9 @@ class ExploreAcclerateRwd(Reward):
                 self.rwd = -2 * self.w
             else:
                 self.rwd = -1 * self.w
+                
+        print("ExploreAcclerateRwd", self.rwd, "curr_dist", curr_dist, "last_dist", self.tmp_target.last_target_dist(),
+              "reached target", self.target_count)
 
         self.tmp_target.set_last_target_dist(curr_dist)
 
@@ -506,8 +509,7 @@ class ExploreAcclerateRwd(Reward):
 
         self._last_dist_to_Home = tmp_dist_to_home
 
-        print("ExploreAcclerateRwd", self.rwd, "curr_dist", curr_dist, "last_dist", self.tmp_target.last_target_dist(),
-              "reached target", self.target_count)
+        
 
     def _compute_dist(self, env):
         scout = env.scout()
