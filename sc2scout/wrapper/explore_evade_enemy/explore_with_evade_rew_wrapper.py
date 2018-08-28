@@ -13,7 +13,7 @@ class ExploreWithEvadeRwdWrapper(ScoutExploreEvadeRwd):
                                  # sr.EnemyBaseArrivedReward(weight=50),
                                  sr.MinDistReward(negative=True,weight=0.1),
                                  # er.EvadeDistanceReward(weight=1),
-                                 er.EvadeUnderAttackRwd(weight=0.2),
+                                 er.EvadeUnderAttackRwd(weight=0.5),
                                  # er.EnemyInRangeRwd(weight=1),
                                  # sr.AreaOfOverlapReward(weight=2)
                                  ]
@@ -26,7 +26,7 @@ class ExploreWithEvadeRwdWrapper(ScoutExploreEvadeRwd):
                                  er.EvadeUnderAttackRwd(weight=0.5),
                                  sr.ViewEnemyResourcesAndBase(weight=1),
                                  # er.EnemyInRangeRwd(weight=1),
-                                 sr.ExploreAcclerateRwd(weight=0.01)
+                                 sr.ExploreAcclerateRwd(weight=0.05)
                                 ]
 
         self._backward_rewards = [sr.HomeReward(back=True, negative=True,weight=0.1),
@@ -35,7 +35,7 @@ class ExploreWithEvadeRwdWrapper(ScoutExploreEvadeRwd):
                                   #sr.MinDistReward(negative=True),
                                   sr.BackwardStateRwd(weight=1),
                                   # er.EvadeDistanceReward(weight=1),
-                                  er.EvadeUnderAttackRwd(weight=0.2)
+                                  er.EvadeUnderAttackRwd(weight=0.5)
                                   # er.EnemyInRangeRwd(weight=1),
                                   # sr.AreaOfOverlapReward(weight=2),
                                   # sr.HitEnemyBaseReward(weight=50),
