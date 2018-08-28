@@ -473,6 +473,8 @@ class ExploreAcclerateRwd(Reward):
         self._last_dist_to_Home = None
 
     def reset(self, obs, env):
+        scout = env.scout()
+        self._last_health = scout.float_attr.health
         e_x, e_y = env.unwrapped.enemy_base()
         self.tmp_target = TempTarget(ENEMY_BASE_RANGE, e_x, e_y)
         self.target_count = 0
@@ -489,14 +491,22 @@ class ExploreAcclerateRwd(Reward):
                                             curr_target_pos[0],
                                             curr_target_pos[1])
         tmp_dist_to_home = self._compute_dist(env)
-
+        
+        curr_health = env.unwrapped.scout().float_attr.health
+        
         if curr_dist < self.tmp_target.last_target_dist():
-            self.rwd = 0
-        else:
-            if tmp_dist_to_home <= self._last_dist_to_Home:
-                self.rwd = -2 * self.w
+            if curr_health < self._last_health:
+                self.rwd = -3 * self.w
             else:
-                self.rwd = -1 * self.w
+                self.rwd = 0
+        else:
+            if curr_health < self._last_health:
+                slef.rwd = -3 * self.w
+            else:
+                if tmp_dist_to_home <= self._last_dist_to_Home:
+                    self.rwd = -2 * self.w
+                else:
+                    self.rwd = -1 * self.w
                 
         print("ExploreAcclerateRwd", self.rwd, "curr_dist", curr_dist, "last_dist", self.tmp_target.last_target_dist(),
               "reached target", self.target_count)
