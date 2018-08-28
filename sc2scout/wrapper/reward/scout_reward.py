@@ -501,7 +501,7 @@ class ExploreAcclerateRwd(Reward):
                 self.rwd = 0
         else:
             if curr_health < self._last_health:
-                slef.rwd = -3 * self.w
+                self.rwd = -3 * self.w
             else:
                 if tmp_dist_to_home <= self._last_dist_to_Home:
                     self.rwd = -2 * self.w
