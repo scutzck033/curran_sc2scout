@@ -515,9 +515,15 @@ class ExploreAcclerateRwd(Reward):
 
         if curr_dist < 4:
             self.tmp_target.set_curr_target_index()
+            next_target_pos = self.tmp_target.curr_target_pos()
+            curr_dist = env.unwrapped._calculate_distances(scout_x, scout_y,
+                                            next_target_pos[0],
+                                            next_target_pos[1])
+            self.tmp_target.set_last_target_dist(curr_dist)
             self.target_count = self.target_count+1
 
         self._last_dist_to_Home = tmp_dist_to_home
+        self._last_health = curr_health
 
         
 
