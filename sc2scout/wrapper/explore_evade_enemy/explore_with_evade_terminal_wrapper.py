@@ -5,7 +5,7 @@ from sc2scout.wrapper.explore_enemy.auxiliary_wrapper import RoundTripTerminalWr
 JUDGE_WALKAROUND_DISTANCE = 12
 ENEMY_BASE_RANGE = 12
 SCOUT_RANGE = 8
-EXPLORE_STEP = 500
+EXPLORE_STEP = 800
 
 class ExploreWithEvadeTerminalWrapper(RoundTripTerminalWrapper):
     def __init__(self, env):
