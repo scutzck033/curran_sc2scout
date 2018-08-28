@@ -41,7 +41,7 @@ class ExploreWithEvadeRwdWrapper(ScoutExploreEvadeRwd):
                                   # sr.HitEnemyBaseReward(weight=50),
                                   ]
 
-        self._final_rewards = [sr.RoundTripFinalReward(weight=1)
+        self._final_rewards = [sr.RoundTripFinalReward(weight=0.5)
                                
                                # er.EvadeFinalRwd(weight=50)
                                ]
