@@ -28,6 +28,7 @@ class ScoutlImgFeature(ImgFeatExtractor):
         super(ScoutlImgFeature, self).reset(env)
         e_x, e_y = env.unwrapped.enemy_base()
         self.local_tmp_target = TempTarget(ENEMY_BASE_RANGE, e_x, e_y)
+        self._resources_unit_set = set([])
         print('ScoutlImgFeature reset')
         print('global_raidus=({},{}), local_raduis=({},{})'.format(self._x_radius, self._y_radius,
                                                                    self.local_radius, self.local_radius))
@@ -178,6 +179,8 @@ class ScoutlImgFeature(ImgFeatExtractor):
 
     # to capture the relative location information between scout and enemy resources
     def set_pos_local_channel2(self, env, image, channel_id, enemys, neutrals):
+        enemy_units = []
+        
         cx, cy = self.center_pos(env)
         # set scout pos
         scout = env.unwrapped.scout()
@@ -187,20 +190,29 @@ class ScoutlImgFeature(ImgFeatExtractor):
                           self.mat_element_value['scout'] / len(self.mat_element_value))
 
         # set enemy base pos
-        for u in enemys:
-            if u.unit_type in sm.BASE_UNITS:
-                if self.check_in_range(u.float_attr.pos_x, u.float_attr.pos_y, cx, cy, self.local_radius):
-                    u_pos = self.pos_2_2d_local(u.float_attr.pos_x, u.float_attr.pos_y, cx, cy)
-                    self.enhanceRange(image, channel_id, u_pos, self.global_scout_width,
-                                      self.mat_element_value['enemy_base'] / len(self.mat_element_value))
+        #for u in enemys:
+         #   if u.unit_type in sm.BASE_UNITS:
+          #      if self.check_in_range(u.float_attr.pos_x, u.float_attr.pos_y, cx, cy, self.local_radius):
+           #         u_pos = self.pos_2_2d_local(u.float_attr.pos_x, u.float_attr.pos_y, cx, cy)
+            #        self.enhanceRange(image, channel_id, u_pos, self.global_scout_width,
+             #                         self.mat_element_value['enemy_base'] / len(self.mat_element_value))
         # set enemy resources pos
         for u in neutrals:
             if self.check_in_range(u.float_attr.pos_x, u.float_attr.pos_y, cx, cy, self.local_radius) \
                     and self.check_in_range(u.float_attr.pos_x, u.float_attr.pos_y, enemy_bsae[0], enemy_bsae[1], 10):
                 if u.unit_type in sm.MINERAL_UNITS or u.unit_type in sm.VESPENE_UNITS:
-                    u_pos = self.pos_2_2d_local(u.float_attr.pos_x, u.float_attr.pos_y, cx, cy)
-                    self.enhanceRange(image, channel_id, u_pos, self.global_scout_width,
-                                      self.mat_element_value['resource'] / len(self.mat_element_value))
+                    enemy_units.append((u.float_attr.pos_x, u.float_attr.pos_y))
+                    
+        
+        for eu in enemy_units:
+            if eu in self._resources_unit_set:
+                pass
+            else:
+                u_pos = self.pos_2_2d_local(eu[0], eu[1], cx, cy)
+                self.enhanceRange(image, channel_id, u_pos, self.global_scout_width,
+                                     self.mat_element_value['resource'] / len(self.mat_element_value))
+                if env.unwrapped._calculate_distances(eu[0],eu[1],scout.float_attr.pos_x,scout.float_attr.pos_y)<=8: 
+                    self._resources_unit_set.add(eu)
 
     # to capture the relative location information between scout and temp target while at exploring state
     def set_pos_local_channel3(self, env, image, channel_id):
