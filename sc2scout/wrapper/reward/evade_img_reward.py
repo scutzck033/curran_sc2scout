@@ -47,7 +47,7 @@ class EvadeFinalRwd(Reward):
         if done:
             survive = env.unwrapped.scout_survive()
             if survive:
-                self.rwd = 1 * self.w
+                self.rwd = 0
             else:
                 self.rwd = -1 * self.w
         else:
