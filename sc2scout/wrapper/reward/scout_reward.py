@@ -289,9 +289,9 @@ class RoundTripFinalReward(Reward):
             elif self._dest.enter and self._src.enter:
                 self.rwd = self.w * 1
             else:
-                self.rwd = self.w * -1
+                self.rwd = 0
         else:
-            self.rwd
+            self.rwd = 0
         print("RoundTripFinalReward",self.rwd)
 
     def _check(self, pos):
